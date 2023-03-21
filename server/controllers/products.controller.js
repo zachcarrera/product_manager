@@ -18,7 +18,7 @@ const getAllProducts = (req, res) => {
             res.json({ products: allProducts });
         })
         .catch((error) => {
-            res.json({ ...error, message: error.message });
+            res.status(400).json({ ...error, message: error.message });
         });
 };
 
@@ -29,7 +29,32 @@ const getOneProduct = (req, res) => {
             res.json({ product: oneProduct });
         })
         .catch((error) => {
-            res.json({ ...error, message: error.message });
+            res.status(400).json({ ...error, message: error.message });
+        });
+};
+
+const updateProduct = (req, res) => {
+    console.log("controller: updateProduct", req.params, req.body);
+    Product.findOneAndUpdate({ _id: req.params._id }, req.body, {
+        new: true,
+        runValidators: true,
+    })
+        .then((updatedProduct) => {
+            res.json({ product: updatedProduct });
+        })
+        .catch((error) => {
+            res.status(400).json({ ...error, message: error.message });
+        });
+};
+
+const deleteProduct = (req, res) => {
+    console.log("controller: deleteProduct", req.params);
+    Product.deleteOne({ _id: req.params._id })
+        .then((result) => {
+            res.json({ dbResponse: result });
+        })
+        .catch((error) => {
+            res.status(400).json({ ...error, message: error.message });
         });
 };
 
@@ -37,4 +62,6 @@ module.exports = {
     createProduct,
     getAllProducts,
     getOneProduct,
+    updateProduct,
+    deleteProduct,
 };
