@@ -45,6 +45,20 @@ export const Dashboard = () => {
         setDescription("");
     };
 
+    const handleDeleteFromList = (deleteId) => {
+        console.log(deleteId);
+        axios
+            .delete(`http://localhost:8000/api/products/${deleteId}`)
+            .then((res) => {
+                setProducts(
+                    products.filter((product) => product._id !== deleteId)
+                );
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     return (
         <>
             <div>
@@ -79,9 +93,19 @@ export const Dashboard = () => {
             <div>
                 <h1>All Products</h1>
                 {products.map((product) => (
-                    <p key={product._id}>
-                        <Link to={`/${product._id}`}>{product.title}</Link>
-                    </p>
+                    <div key={product._id}>
+                        <p>
+                            <Link to={`/${product._id}`}>{product.title}</Link>
+                        </p>
+                        {/* <button> */}
+                        <Link to={`/${product._id}/edit`}>Edit</Link>
+                        {/* </button> */}
+                        <button
+                            onClick={() => handleDeleteFromList(product._id)}
+                        >
+                            Delete
+                        </button>
+                    </div>
                 ))}
             </div>
         </>
