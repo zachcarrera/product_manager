@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { ProductList } from "../components/ProductList";
 
 export const Dashboard = () => {
     const [title, setTitle] = useState("");
@@ -55,6 +56,7 @@ export const Dashboard = () => {
                 </div>
                 <input type="submit" value="Create" />
             </form>
+            <ProductList />
         </div>
     );
 };
