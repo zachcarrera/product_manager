@@ -16,6 +16,11 @@ export const ProductList = (props) => {
                 console.log(error);
             });
     }, []);
+
+    const addProduct = (newProduct) => {
+        setProducts([...products, newProduct]);
+    };
+
     return (
         <div>
             <h1>All Products</h1>
