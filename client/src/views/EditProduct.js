@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ProductForm } from "../components/ProductForm";
 
 export const EditProduct = () => {
     const { _id } = useParams();
@@ -24,15 +25,9 @@ export const EditProduct = () => {
             });
     }, [_id]);
 
-    const handleUpdateSubmit = (event) => {
-        event.preventDefault();
-        console.log(event);
+    const handleUpdateSubmit = (formData) => {
         axios
-            .put(`http://localhost:8000/api/products/update/${_id}`, {
-                title,
-                price,
-                description,
-            })
+            .put(`http://localhost:8000/api/products/update/${_id}`, formData)
             .then((res) => {
                 navigate(`/${_id}`);
             })
@@ -40,37 +35,18 @@ export const EditProduct = () => {
                 console.log(error);
             });
     };
-
     return (
         <div>
-            EditProduct {_id}
-            <form onSubmit={handleUpdateSubmit}>
-                <div>
-                    <label>Title</label>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Price</label>
-                    <input
-                        type="number"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Description</label>
-                    <input
-                        type="text"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-                <input type="submit" value="Update" />
-            </form>
+            <h1 className="my-2">Edit Product</h1>
+            {title && price && description && (
+                <ProductForm
+                    handleSubmit={handleUpdateSubmit}
+                    title={title}
+                    price={price}
+                    description={description}
+                    buttonLabel="Update"
+                />
+            )}
         </div>
     );
 };
